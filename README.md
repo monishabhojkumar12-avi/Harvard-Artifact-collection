@@ -1,249 +1,174 @@
-📌 Project Statement:
-As an app developer, you are tasked with building an interactive, end-to-end ETL and data exploration platform using the Harvard Art Museums public API. This platform will empower users to dynamically explore, collect, store, and query rich art collections from Harvard’s digital archive — all through a simple, intuitive Streamlit web application.
-
-🎯 Business Use Cases:
-Museum Collection Strategy:
- Enable curators and acquisition teams to analyze classification trends (e.g., sculptures, manuscripts) to guide future acquisitions or exhibitions.
-
-
-Educational Portals:
- Provide universities or online platforms with an interactive tool for students to explore historical artifacts by classification, era, or culture.
-
-
-Audience Interest Tracking:
- Use SQL analytics to track which types of artifacts receive the most user queries or views, informing digital marketing and content strategies.
-
-
-Cultural Research & Journalism:
- Support writers, historians, or researchers in filtering and retrieving targeted artifact data for storytelling or analysis.
-
-
-Grant Reporting & Documentation:
- Help museum management export visual and data-driven summaries of digital engagement and collection diversity for funding reports.
-
-
-Project Approach:
-📝1: Getting the Harvard Art Museums API Key
-Go to: https://www.harvardartmuseums.org/collections/api
-Scroll down and click on “Send a request”.
-In the google form, fill in your name, email address, and a brief description of your project or intended use.
-Submit the form — your API key will be displayed instantly and also sent to your email.
-The key will look like: “1a7ae53e-......”
-Use your key to format the following API URLs using params: 
-Classification: “https://api.harvardartmuseums.org/classification”
-Details of every classification:
-“https://api.harvardartmuseums.org/object”
-
-📂 Available Classifications & Data Collection Targets
-The Harvard Art Museums API offers a rich collection of artifacts categorized under 116 unique classifications — ranging from Paintings, Sculptures, and Coins to Jewelry, Furniture, Drawings, and many more. These classifications represent different types of artworks and historical objects preserved in the museum's digital archive.
-To-Dos:
-Collect a minimum of 2500 records for each chosen classification(via streamlit) using the API.
-
-
-Store these records in 3 separate SQL tables for further querying and analysis.
-
-
-This ensures broad, diverse data coverage and provides a rich base for meaningful data exploration 
-
-. SQL Table creation:
-🗄️ Table 1: artifact_metadata
-This table stores general metadata about each artifact.
-Field
-Description
-Data Type
-id
-Unique ID for the artifact(PRIMARY KEY)
-INTEGER
-title
-Title or name of the artifact
-TEXT
-culture
-Cultural origin of the artifact
-TEXT
-period
-Specific historical period
-TEXT
-century
-Century the object belongs to
-TEXT
-medium
-Material/technique used (e.g., ink, silk,silver)
-TEXT
-dimensions
-Physical dimensions (height, width, etc.)
-TEXT
-description
-Description of the object
-TEXT
-department
-Department at the museum responsible for the object
-TEXT
-classification
-Classification/category (e.g., Painting, Sculpture)
-TEXT
-accessionyear
-Year the object was acquired
-INTEGER
-accessionmethod
-How the object was acquired (purchase, gift, etc.)
-TEXT
+Overview
 
+The Harvard Artifact Collection Project is an end-to-end data engineering and analysis project built using the Harvard Art Museums API. The project focuses on extracting large-scale artifact data, transforming it into a structured format, storing it in a relational database, and performing analytical queries to gain insights into artworks, cultures, media usage, and color patterns.
 
-🖼️ Table 2: artifact_media
-This table handles visual and interactive media + additional metadata.
-Field
-Description
-Data Type
-objectid
-Foreign key linking to artifact_metadata
-INT
-imagecount
-Number of associated images
-INT
-mediacount
-Number of media files (images, videos)
-INTEGER
-colorcount
-Count of detected colors
-INTEGER
-rank
-Importance or order value for display
-INTEGER
-datebegin
-Starting year of creation
-INTEGER
-dateend
-Ending year of creation
-INTEGER
+This project is designed as a beginner-friendly yet industry-relevant implementation of API data handling, SQL database design, and data analysis.
 
+Objectives:
 
-🎨 Table 3: artifact_colors:
-Color details extracted from the JSON structure.
-Column
-Description
-Data Type
-objectid
-Foreign key that links this color record to its corresponding artifact.
-INTEGER
-color
-Hexadecimal color code (e.g., #afafaf) detected in the artifact's image.
-TEXT
-spectrum
-A representative color on the visible spectrum (also a hex code, e.g., #8c5fa8).
-TEXT
-hue
-General name of the color tone (e.g., Grey, Red, Blue).
-TEXT
-percent
-Percentage of the artifact's image area occupied by this color (0.0–100.0).
-REAL
-css3
-Closest matching CSS3 standard color code (e.g., #a9a9a9).
-TEXT
+1.Extract artifact data from a public museum API
 
+2.Design a normalized relational database schema
 
-🔍 3 : SQL Queries (Display the output in streamlit)
-🏺 artifact_metadata Table:
-List all artifacts from the 11th century belonging to Byzantine culture.
+3.Store and manage large datasets using SQL
 
+4.Perform analytical queries using SQL
 
-What are the unique cultures represented in the artifacts?
+5.Enable classification-based filtering and analysis
 
+6.Prepare data for visualization and dashboarding
 
-List all artifacts from the Archaic Period.
+🧩 Data Source
 
+API: Harvard Art Museums API
 
-List artifact titles ordered by accession year in descending order.
+Endpoint: /object
 
+Data Includes:
 
-How many artifacts are there per department?
+1.Artifact metadata
 
+2.Media information
 
+3.Color composition details
 
+4.Media information
 
+5.Color composition details
 
-🖼️ artifact_media Table:
-Which artifacts have more than 1 image?
+Database Schema
 
+The project uses three relational tables:
 
-What is the average rank of all artifacts?
+1️⃣ artifact_metadata
 
+Stores core descriptive information about each artifact.
 
-Which artifacts have a higher colorcount than mediacount?
+1.object_id (Primary Key)
 
+2.title
 
-List all artifacts created between 1500 and 1600.
+3.culture
 
+4.period
 
-How many artifacts have no media files?
+5.century
 
+6.classification
 
+7.department
 
-🎨 artifact_colors Table:
-What are all the distinct hues used in the dataset?
+8.accession year
 
+9.accession method
 
-What are the top 5 most used colors by frequency?
+2️⃣ artifact_media
 
+Stores media-related information.
 
-What is the average coverage percentage for each hue?
+1.object_id (Foreign Key)
 
+2.image count
 
-List all colors used for a given artifact ID.
+3.media count
 
+4.color count
 
-What is the total number of color entries in the dataset?
+5.rank
 
+6.date begin / date end
 
+3️⃣ artifact_color
 
-🔗 Join-Based Queries:
-List artifact titles and hues for all artifacts belonging to the Byzantine culture.
+Stores color-level details for each artifact.
 
+1.object_id (Foreign Key)
 
-List each artifact title with its associated hues.
+2.color
 
+3.hue
 
-Get artifact titles, cultures, and media ranks where the period is not null.
+4.spectrum
 
+5.coverage percentage
 
-Find artifact titles ranked in the top 10 that include the color hue "Grey".
+6.css3 color name
 
+🛠️ Technologies Used
 
-How many artifacts exist per classification, and what is the average media count for each?
+1.Python – Data extraction and transformation
 
-Along with answering the 20 given questions, learners are encouraged to frame and execute their own SQL queries(5 to 10) to derive additional insights.
+2.Pandas – Data manipulation
 
-📌 📊 Streamlit Application Breakdown
-🖥️  App Interface Layout
-Title + Instructions
+3.Requests – API calls
 
+4.SQLAlchemy – Database connectivity
 
-Dropdown to select a classification(Ex: Coins, paintings, scriptures, jewellery,Drawings etc..)
+5.MySQL (TiDB Cloud) – Cloud database
 
+6.SQL – Data analysis queries
 
-Collect a minimum of 2500 records for every classification.
+7.Streamlit – Interactive dashboard (optional)
 
+🔄 Data Pipeline Workflow
 
-Buttons
+1.Fetch artifact data using API pagination
 
+2.Filter artifacts by classification (Paintings, Drawings, Sculptures, Jewelry, etc.)
 
-Collect Data → fetch from API
+3.Normalize JSON data into relational tables
 
+4.Load data into MySQL database
 
-Show Data → display fetched records
+5.Run SQL queries for analysis
 
+Visualize insights using Streamlit
 
-Insert into SQL → store data into SQL table
+📁 Project Structure
+├── data_extraction.py
+├── database_load.py
+├── analysis_queries.sql
+├── streamlit_app.py
+├── requirements.txt
+└── README.md
+🚀 How to Run
 
+Clone the repository
 
-Query & Visualization Section
+Install dependencies
 
+pip install -r requirements.txt
 
-Pre-written query options in a selectbox
+Set up your MySQL / TiDB Cloud credentials
 
+Run data extraction script
 
-Button to Run Query
+Load data into the database
 
+Execute SQL queries or launch Streamlit app
 
-Display results in a table(mandatory) or chart(optional)
+📌 Key Learnings
 
+1.API pagination handling
+
+2.Relational database design
+
+3.SQL joins and aggregations
+
+4.Data cleaning and normalization
+
+5.End-to-end data pipeline development
+
+🙌 Acknowledgements
+
+Harvard Art Museums for providing the public API
+
+Open-source Python and SQL communities
+
+📬 Contact
+
+Created as part of a learning and portfolio project.
+
+⭐ If you found this project useful, feel free to star the repository!
+
+ 
