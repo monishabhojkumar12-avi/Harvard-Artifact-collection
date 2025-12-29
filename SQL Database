@@ -1,1 +1,41 @@
+CREATE TABLE artifact_metadata (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    culture TEXT,
+    period TEXT,
+    century TEXT,
+    medium TEXT,
+    dimensions TEXT,
+    description TEXT,
+    department TEXT,
+    classification TEXT,
+    accessionyear INTEGER,
+    accessionmethod TEXT
+);
+
+CREATE TABLE artifact_media (
+    objectid INTEGER,
+    imagecount INTEGER,
+    mediacount INTEGER,
+    colorcount INTEGER,
+    `rank` INTEGER,
+    datebegin INTEGER,
+    dateend INTEGER,
+    PRIMARY KEY (objectid),
+    FOREIGN KEY (objectid) REFERENCES artifact_metadata(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE artifact_colors (
+    objectid INTEGER,
+    color TEXT,
+    spectrum TEXT,
+    hue TEXT,
+    percent REAL,
+    css3 TEXT,
+    FOREIGN KEY (objectid) REFERENCES artifact_metadata(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
 
