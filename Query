@@ -1,1 +1,63 @@
+1️⃣ Artifacts from the 11th century & Byzantine culture
+✅ SQL Query
+SELECT *
+FROM artifact_metadata
+WHERE century = '11th century'
+  AND culture = 'Byzantine';
 
+2️⃣ Unique cultures represented in the artifacts
+✅ SQL Query
+SELECT DISTINCT culture
+FROM artifact_metadata
+WHERE culture IS NOT NULL;
+
+3️⃣ Artifacts from the Archaic Period
+✅ SQL Query
+SELECT *
+FROM artifact_metadata
+WHERE period = 'Archaic Period';
+
+5️⃣ Number of artifacts per department
+✅ SQL Query
+SELECT department, COUNT(*) AS artifact_count
+FROM artifact_metadata
+GROUP BY department
+ORDER BY artifact_count DESC;
+
+6.Average rank of all artifacts
+✅ SQL Query
+SELECT AVG(`rank`) AS average_rank
+FROM artifact_media;
+
+----------------------JOIN QUERY-----------------------
+
+1️⃣ Artifact titles & hues for Byzantine culture
+✅ SQL Query
+SELECT DISTINCT a.title, c.hue
+FROM artifact_metadata a
+JOIN artifact_colors c ON a.id = c.objectid
+WHERE a.culture = 'Byzantine';
+
+2️⃣ Each artifact title with its associated hues
+✅ SQL Query
+SELECT a.title, c.hue
+FROM artifact_metadata a
+JOIN artifact_colors c ON a.id = c.objectid
+ORDER BY a.title;
+
+3️⃣ Artifact titles, cultures & media ranks where period is NOT NULL
+✅ SQL Query
+SELECT a.title, a.culture, m.`rank`
+FROM artifact_metadata a
+JOIN artifact_media m ON a.id = m.objectid
+WHERE a.period IS NOT NULL;
+
+4️⃣ Top 10 ranked artifacts that include the color hue "Grey"
+✅ SQL Query
+SELECT DISTINCT a.title, m.`rank`, c.hue
+FROM artifact_metadata a
+JOIN artifact_media m ON a.id = m.objectid
+JOIN artifact_colors c ON a.id = c.objectid
+WHERE c.hue = 'Grey'
+ORDER BY m.`rank` ASC
+LIMIT 10;
