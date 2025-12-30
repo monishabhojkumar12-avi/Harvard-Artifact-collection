@@ -69,17 +69,7 @@ for i in all_records:
             "css3": j.get("css3")
         })   
         
-------sql connection-------
 
-
-engine = create_engine(
-     "mysql+pymysql://278VnWPCuCkeWbZ.root:EOreOfSv1GliELtY@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/Harvard_project",
-      connect_args={
-        "ssl": {
-            "ca": "/content/tidb-ca.pem"
-        }
-    }
-)
 
 
     df_metadata.to_sql("artifact_metadata", engine, if_exists="append", index=False)
