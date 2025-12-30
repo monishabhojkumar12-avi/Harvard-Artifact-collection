@@ -295,9 +295,4 @@ elif st.session_state.step == "query":
         df = pd.read_sql(QUERY_OPTIONS[query_choice], conn)
         st.dataframe(df)
 
-        if st.checkbox("Show Chart") and df.shape[1] == 2:
-            fig, ax = plt.subplots()
-            ax.bar(df.iloc[:, 0], df.iloc[:, 1])
-            plt.xticks(rotation=45)
-            st.pyplot(fig)
-
+        
